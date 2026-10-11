@@ -1,0 +1,43 @@
+{
+  "name": "whop-recovery",
+  "version": "1.0.0",
+  "description": "Failed-payment recovery tool for Whop creators: OAuth app authorization plus payment.failed webhook capture.",
+  "private": true,
+  "main": "dist/src/server/index.js",
+  "scripts": {
+    "dev": "tsx watch src/server/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/src/server/index.js",
+    "test:webhook": "tsx scripts/simulate-webhook.ts",
+    "test:recovery": "tsx scripts/test-recovery-message.ts",
+    "test:recovery-flow": "tsx scripts/test-recovery-flow.ts",
+    "test:reminder-scheduler": "tsx scripts/test-reminder-scheduler.ts",
+    "test:email-fallback": "tsx scripts/test-email-fallback.ts",
+    "test:discord-recovery": "tsx scripts/test-discord-recovery.ts",
+    "test:dodo-billing": "tsx scripts/test-dodo-billing.ts"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@whop/sdk": "^1.0.11",
+    "better-sqlite3": "^11.3.0",
+    "cookie-parser": "^1.4.7",
+    "discord.js": "^14.27.0",
+    "dodopayments": "^2.52.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "node-cron": "^4.6.0",
+    "resend": "^4.8.0",
+    "standardwebhooks": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.10",
+    "@types/node-cron": "^3.0.11",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.4"
+  }
+}
