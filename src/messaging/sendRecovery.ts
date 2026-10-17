@@ -1,4 +1,4 @@
-import { incrementReminderSent, type FailedPaymentRecord } from "../db/schema";
+import { getCreatorAccountById, incrementReminderSent, type FailedPaymentRecord } from "../db/schema";
 import { composeRecoveryEmailSubject, composeRecoveryMessage } from "./composeMessage";
 import { getDiscordProvider, getEmailProvider } from "./provider";
 import type { DiscordProvider, EmailProvider, SendMessageResult } from "./types";
@@ -42,6 +42,20 @@ export async function sendRecoveryMessage(
       `[sendRecovery] Failed payment ${payment.id} has no discord_id or customer_email; skipping.`
     );
     return { success: false, error: "No Discord id or email on file." };
+  }
+
+  // Recovery messaging is gated on having a connected Dodo payment method,
+  // since we only get paid (our 15% commission) when we recover revenue --
+  // a creator who never connects shouldn't get the service for free.
+  // Payments with no creator_account_id (e.g. test scripts) bypass this.
+  if (payment.creator_account_id !== null) {
+    const creatorAccount = getCreatorAccountById(payment.creator_account_id);
+    if (creatorAccount && !creatorAccount.dodo_subscription_id) {
+      console.warn(
+        `[sendRecovery] Creator ${creatorAccount.id} has not connected a payment method; skipping recovery send for payment ${payment.id}.`
+      );
+      return { success: false, error: "Creator has not connected a payment method." };
+    }
   }
 
   if (payment.reminder_count >= 3) {

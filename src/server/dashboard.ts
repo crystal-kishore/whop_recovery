@@ -182,7 +182,7 @@ function renderConnected(
       </div>`
     : `
       <div class="onboarding-step">
-        <p>Connect a payment method so we can bill our ${Math.round(creatorAccount.billing_rate * 100)}% commission on revenue we recover for you (only charged when we actually recover a payment).</p>
+        <p><strong>Required:</strong> connect a payment method so we can bill our ${Math.round(creatorAccount.billing_rate * 100)}% commission on revenue we recover for you (only charged when we actually recover a payment). Recovery messages won't be sent until this is connected.</p>
         <a class="btn btn-dodo" href="/billing/dodo/connect">Connect payment method</a>
       </div>`;
 
