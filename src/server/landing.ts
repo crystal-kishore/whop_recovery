@@ -156,6 +156,19 @@ function renderLandingPage(): string {
     color: var(--success);
     font-weight: 700;
   }
+  .pricing-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--success);
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    padding: 10px 20px;
+    border-radius: 999px;
+    margin: 0 0 24px;
+  }
 
   /* ---------- Sections ---------- */
   section {
@@ -389,6 +402,7 @@ function renderLandingPage(): string {
       Whop Payment Recovery automatically catches failed subscription payments and recovers
       them via Discord DM — where your members actually are.
     </p>
+    <p class="pricing-heading">% We only take a small commission when we recover real money for you — no recovery, no charge.</p>
     <a class="cta-primary" href="/auth/whop">Connect Whop</a>
     <div class="trust-line"><span class="check">✓</span> No fees unless we recover your money</div>
   </div>
