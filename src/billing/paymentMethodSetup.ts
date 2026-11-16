@@ -1,4 +1,5 @@
 import type { Request, Response } from "express";
+import { NotFoundError } from "dodopayments";
 import {
   getCreatorAccountBySessionToken,
   setDodoCustomerForCreator,
@@ -30,11 +31,23 @@ function assertBillingConfigured(): void {
 export async function ensureDodoCustomerForCreator(
   creatorAccount: CreatorAccountRecord
 ): Promise<string> {
+  const client = getDodoClient();
+
   if (creatorAccount.dodo_customer_id) {
-    return creatorAccount.dodo_customer_id;
+    try {
+      await client.customers.retrieve(creatorAccount.dodo_customer_id);
+      return creatorAccount.dodo_customer_id;
+    } catch (err) {
+      // Customer ids aren't shared between Dodo's test_mode and live_mode
+      // (e.g. this one was cached before a live_mode switch) -- fall
+      // through and create a fresh one instead of failing checkout.
+      if (!(err instanceof NotFoundError)) throw err;
+      console.warn(
+        `[paymentMethodSetup] Cached Dodo customer ${creatorAccount.dodo_customer_id} not found in the current environment -- creating a new one for creator ${creatorAccount.id}.`
+      );
+    }
   }
 
-  const client = getDodoClient();
   // creator_accounts has no verified contact email on file (Whop's OAuth
   // scope we use doesn't expose one) -- Dodo requires an email to create a
   // customer, so we synthesize a stable, non-deliverable placeholder from
