@@ -157,7 +157,8 @@ function renderLandingPage(): string {
     font-weight: 700;
   }
   .pricing-heading {
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
     align-items: center;
     gap: 8px;
     font-size: 15px;
@@ -167,7 +168,7 @@ function renderLandingPage(): string {
     border: 1px solid rgba(34, 197, 94, 0.35);
     padding: 10px 20px;
     border-radius: 999px;
-    margin: 0 0 24px;
+    margin: 0 auto 24px;
   }
 
   /* ---------- Sections ---------- */
@@ -520,7 +521,7 @@ function renderLandingPage(): string {
 </section>
 
 <footer>
-  &copy; ${new Date().getFullYear()} Whop Payment Recovery. Questions? <a href="mailto:support@whop-recovery.example.com">Contact support</a>.
+  &copy; ${new Date().getFullYear()} Whop Payment Recovery. Questions? <a href="mailto:snub.app@gmail.com">Contact support</a>.
 </footer>
 
 </body>
